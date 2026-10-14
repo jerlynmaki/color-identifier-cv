@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Color Identifier</title>
+  <style>
+    :root {
+      --bg: #14161a;
+      --card: #1e2127;
+      --text: #f2f4f8;
+      --muted: #9aa3b2;
+      --accent: #22c55e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, Segoe UI, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    header {
+      padding: 14px 20px;
+      border-bottom: 1px solid #2a2e36;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    header p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+      gap: 16px;
+      padding: 16px;
+    }
+
+    @media (max-width: 860px) {
+      main {
+        grid-template-columns: 1fr;
+        padding: 10px;
+      }
+    }
+
+    .stage {
+      position: relative;
+      background: #000;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+      transform: scaleX(-1);
+    }
+
+    #zone {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      border: 3px solid var(--accent);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, .25);
+      pointer-events: none;
+    }
+
+    #zoneLabel {
+      position: absolute;
+      left: 0;
+      top: 100%;
+      margin-top: 6px;
+      background: #000;
+      color: var(--accent);
+      font-size: .8rem;
+      padding: 2px 6px;
+      white-space: nowrap;
+    }
+
+    #topLabel {
+      position: absolute;
+      left: 0;
+      bottom: 100%;
+      margin-bottom: 6px;
+      background: #000;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    #strip {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, .65);
+      padding: 10px 14px;
+      font-size: 1rem;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    button {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid #333944;
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: .9rem;
+    }
+
+    button:hover {
+      border-color: var(--accent);
+    }
+
+    label {
+      color: var(--muted);
+      font-size: .85rem;
+    }
+
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+    }
+
+    .previews {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .previews figure {
+      margin: 0;
+      text-align: center;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+
+    .previews img {
+      width: 100px;
+      height: 100px;
+      image-rendering: pixelated;
+      background: #000;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .swatch {
+      width: 44px;
+      height: 44px;
+      border-radius: 6px;
+      border: 1px solid #fff;
+    }
+
+    .rowtop {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 600;
+    }
+
+    .pct {
+      color: #22d3ee;
+    }
+
+    .bar {
+      height: 8px;
+      background: #3a3f49;
+      border-radius: 4px;
+      margin: 4px 0;
+      overflow: hidden;
+    }
+
+    .bar span {
+      display: block;
+      height: 100%;
+    }
+
+    .codes {
+      font-size: .8rem;
+      color: var(--muted);
+    }
+
+    #status {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Real-Time Object Color Identifier</h1>
+    <p>Hold an object inside the green Sampling Zone. Built with Python, OpenCV and Flask.</p>
+  </header>
+
+  <main>
+    <section>
+      <div class="stage" id="stage">
+        <video id="video" autoplay playsinline muted></video>
+        <div id="zone">
+          <div id="topLabel">Waiting...</div>
+          <div id="zoneLabel">SAMPLING ZONE</div>
+        </div>
+        <div id="strip">Waiting for analysis...</div>
+      </div>
+      <div class="controls">
+        <button id="freezeBtn">Freeze</button>
+        <button id="saveBtn">Save screenshot</button>
+        <button id="calBtn">Calibrate white</button>
+        <button id="resetBtn">Reset</button>
+        <label>Zone size <input id="zoneSize" type="range" min="10" max="60" value="30"></label>
+      </div>
+      <div id="status">Starting camera...</div>
+    </section>
+
+    <aside class="panel">
+      <h2>Color Analysis</h2>
+      <div class="previews">
+        <figure><img id="maskImg" alt="mask">Mask</figure>
+        <figure><img id="segImg" alt="segmented">Segmented colors</figure>
+      </div>
+      <div id="rows"></div>
+    </aside>
+  </main>
+
+  <canvas id="crop" width="128" height="128" hidden></canvas>
+
+  <script>
+    const video = document.getElementById("video");
+    const zone = document.getElementById("zone");
+    const crop = document.getElementById("crop");
+    const ctx = crop.getContext("2d");
+    const statusEl = document.getElementById("status");
+    const rowsEl = document.getElementById("rows");
+    const stripEl = document.getElementById("strip");
+    const topLabel = document.getElementById("topLabel");
+
+    let fraction = 0.30;       // zone side as a fraction of the shorter video side
+    let frozen = false;
+    let smooth = {};           // name -> {pct, rgb}  (client-side smoothing)
+    const ALPHA = 0.5;
+    const CROP = 128;
+
+    // ---------- Camera ----------
+    // facingMode "environment" = back camera on phones; laptops fall back to the webcam.
+    async function startCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: "environment" },
+            width: { ideal: 1280 }, height: { ideal: 720 }
+          },
+          audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+        statusEl.textContent = "Camera ready.";
+        updateZoneBox();
+        loop();
+      } catch (err) {
+        statusEl.textContent = "Camera error: " + err.message +
+          ". Allow camera access and close other apps using the camera.";
+      }
+    }
+
+    // Try to lock (or unlock) auto white balance and exposure so colors stop drifting.
+    // Not every phone or browser allows this, so it fails quietly.
+    async function setCameraLock(lock) {
+      try {
+        const track = video.srcObject.getVideoTracks()[0];
+        const caps = track.getCapabilities ? track.getCapabilities() : {};
+        const adv = {};
+        if (caps.whiteBalanceMode) adv.whiteBalanceMode = lock ? "manual" : "continuous";
+        if (caps.exposureMode) adv.exposureMode = lock ? "manual" : "continuous";
+        if (Object.keys(adv).length === 0) return false;
+        await track.applyConstraints({ advanced: [adv] });
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // ---------- Zone box (CSS) ----------
+    function updateZoneBox() {
+      const vw = video.videoWidth || 1280, vh = video.videoHeight || 720;
+      const side = Math.min(vw, vh) * fraction;
+      zone.style.width = (side / vw * 100) + "%";
+      zone.style.height = (side / vh * 100) + "%";
+    }
+
+    function grabZone(quality) {
+      const vw = video.videoWidth, vh = video.videoHeight;
+      const side = Math.min(vw, vh) * fraction;
+      ctx.drawImage(video, (vw - side) / 2, (vh - side) / 2, side, side, 0, 0, CROP, CROP);
+      return new Promise(r => crop.toBlob(r, "image/jpeg", quality));
+    }
+
+    // ---------- Smoothing (exponential moving average) ----------
+    function smoothUpdate(colors) {
+      const incoming = {};
+      colors.forEach(c => incoming[c.name] = c);
+      for (const name in smooth) {
+        if (!(name in incoming)) smooth[name].pct *= (1 - ALPHA);
+      }
+      colors.forEach(c => {
+        if (smooth[c.name]) {
+          const s = smooth[c.name];
+          s.pct += ALPHA * (c.pct - s.pct);
+          s.rgb = s.rgb.map((v, i) => v + ALPHA * (c.rgb[i] - v));
+        } else {
+          smooth[c.name] = {
+            pct: c.pct * (Object.keys(smooth).length ? ALPHA : 1),
+            rgb: c.rgb.slice()
+          };
+        }
+      });
+      for (const name in smooth) if (smooth[name].pct < 1.5) delete smooth[name];
+      const items = Object.entries(smooth).sort((a, b) => b[1].pct - a[1].pct).slice(0, 5);
+      const total = items.reduce((t, [, s]) => t + s.pct, 0) || 1;
+      return items.map(([name, s]) => {
+        const rgb = s.rgb.map(v => Math.max(0, Math.min(255, Math.round(v))));
+        const hex = "#" + rgb.map(v => v.toString(16).padStart(2, "0")).join("").toUpperCase();
+        return { name, pct: 100 * s.pct / total, rgb, hex };
+      });
+    }
+
+    // ---------- Rendering ----------
+    function render(colors) {
+      if (!colors.length) return;
+      topLabel.textContent = colors[0].name + "  " + Math.round(colors[0].pct) + "%";
+      stripEl.textContent = colors.slice(0, 4)
+        .map(c => c.name + ": " + Math.round(c.pct) + "%").join(" | ");
+      rowsEl.innerHTML = colors.map(c => {
+        const css = "rgb(" + c.rgb.join(",") + ")";
+        return `<div class="row">
+      <div class="swatch" style="background:${css}"></div>
+      <div>
+        <div class="rowtop"><span>${c.name}</span><span class="pct">${c.pct.toFixed(1)}%</span></div>
+        <div class="bar"><span style="width:${c.pct}%;background:${css}"></span></div>
+        <div class="codes">RGB(${c.rgb.join(", ")})  ${c.hex}</div>
+      </div></div>`;
+      }).join("");
+    }
+
+    // ---------- Main loop: pipelined requests (up to 2 frames in flight) ----------
+    let seq = 0, lastShown = 0, inflight = 0;
+    const MAX_INFLIGHT = 2;
+
+    async function sendFrame() {
+      const mySeq = ++seq;
+      inflight++;
+      try {
+        const blob = await grabZone(0.92);
+        // Ask for the mask and segmented previews only every 5th frame
+        const preview = (mySeq % 5 === 1) ? "1" : "0";
+        const res = await fetch("/analyze?preview=" + preview, { method: "POST", body: blob });
+        const data = await res.json();
+
+        if (mySeq < lastShown) return;   // drop out-of-order (older) replies
+        lastShown = mySeq;
+
+        if (data.error) {
+          statusEl.textContent = "Server: " + data.error;
+        } else {
+          if (!statusEl.textContent.startsWith("Calibrat")) statusEl.textContent = "Live.";
+          if (data.mask) document.getElementById("maskImg").src = data.mask;
+          if (data.segmented) document.getElementById("segImg").src = data.segmented;
+          render(smoothUpdate(data.colors));
+        }
+      } catch (err) {
+        statusEl.textContent = "Connection problem, retrying...";
+      } finally {
+        inflight--;
+      }
+    }
+
+    function loop() {
+      if (!frozen && video.videoWidth && inflight < MAX_INFLIGHT) sendFrame();
+      setTimeout(loop, 120);
+    }
+
+    // ---------- Controls ----------
+    document.getElementById("freezeBtn").onclick = (e) => {
+      frozen = !frozen;
+      if (frozen) video.pause(); else video.play();
+      statusEl.textContent = frozen ? "Frozen." : "Live.";
+      e.target.textContent = frozen ? "Resume" : "Freeze";
+    };
+
+    document.getElementById("zoneSize").oninput = (e) => {
+      fraction = e.target.value / 100;
+      updateZoneBox();
+    };
+
+    // Hold plain white paper inside the zone, in the same light as your objects, then press this.
+    document.getElementById("calBtn").onclick = async () => {
+      statusEl.textContent = "Calibrating...";
+      const locked = await setCameraLock(true);
+      await new Promise(r => setTimeout(r, 600));      // let the camera settle
+      const blob = await grabZone(0.95);
+      const res = await fetch("/calibrate", { method: "POST", body: blob });
+      const data = await res.json();
+      smooth = {};
+      statusEl.textContent = data.ok
+        ? "Calibrated to white" + (locked ? " (camera locked)." : ".")
+        : "Calibration failed.";
+    };
+
+    document.getElementById("resetBtn").onclick = async () => {
+      await fetch("/reset", { method: "POST" });
+      await setCameraLock(false);
+      smooth = {};
+      statusEl.textContent = "Calibration reset.";
+    };
+
+    document.getElementById("saveBtn").onclick = () => {
+      // Screenshot: video frame plus the sampling zone and color summary on top
+      const c = document.createElement("canvas");
+      c.width = video.videoWidth; c.height = video.videoHeight;
+      const g = c.getContext("2d");
+      g.drawImage(video, 0, 0);
+      const side = Math.min(c.width, c.height) * fraction;
+      g.strokeStyle = "#22c55e"; g.lineWidth = 4;
+      g.strokeRect((c.width - side) / 2, (c.height - side) / 2, side, side);
+      g.fillStyle = "rgba(0,0,0,.65)"; g.fillRect(0, c.height - 50, c.width, 50);
+      g.fillStyle = "#fff"; g.font = "24px Arial";
+      g.fillText(stripEl.textContent, 14, c.height - 18);
+      const a = document.createElement("a");
+      a.download = "capture_" + Date.now() + ".png";
+      a.href = c.toDataURL("image/png");
+      a.click();
+    };
+
+    video.addEventListener("loadedmetadata", updateZoneBox);
+    window.addEventListener("resize", updateZoneBox);
+
+    startCamera();
+  </script>
+</body>
+
+</html>

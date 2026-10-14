@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.vscode/
+.idea/
+.DS_Store
+# keep curated report screenshots, ignore raw captures from live testing
+screenshots/capture_*.png
