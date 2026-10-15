@@ -5,67 +5,376 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Color Identifier</title>
+  <meta name="description"
+    content="A free webcam tool that names the colors of everyday objects to help people with color blindness.">
   <style>
     :root {
-      --bg: #14161a;
-      --card: #1e2127;
-      --text: #f2f4f8;
-      --muted: #9aa3b2;
-      --accent: #22c55e;
+      --bg: #f7f5f0;
+      --ink: #1b2330;
+      --muted: #566074;
+      --card: #ffffff;
+      --line: #e3dfd5;
+      --blue: #1d4ed8;
+      --blue-dark: #173ea8;
+      --orange: #d97706;
+      --soft: #eef3ff;
+      --dark: #10141c;
+      --dark2: #1a202b;
+      --good: #16a34a;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: system-ui, Segoe UI, Arial, sans-serif;
+      font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--ink);
+      line-height: 1.6;
     }
 
-    header {
-      padding: 14px 20px;
-      border-bottom: 1px solid #2a2e36;
+    a {
+      color: var(--blue);
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 1.15rem;
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
     }
 
-    header p {
-      margin: 2px 0 0;
+    h1,
+    h2,
+    h3 {
+      line-height: 1.2;
+      margin: 0 0 .5em;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+
+    section {
+      padding: 56px 0;
+    }
+
+    .eyebrow {
+      color: var(--orange);
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .8rem;
+      margin-bottom: 8px;
+    }
+
+    .lead {
       color: var(--muted);
-      font-size: .85rem;
+      font-size: 1.1rem;
+      max-width: 720px;
     }
 
-    main {
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(247, 245, 240, .92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    nav .wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand {
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--ink);
+    }
+
+    .logo {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
       display: grid;
-      grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
-      gap: 16px;
-      padding: 16px;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
     }
 
-    @media (max-width: 860px) {
-      main {
+    .logo i:nth-child(1) {
+      background: #d97706
+    }
+
+    .logo i:nth-child(2) {
+      background: #1d4ed8
+    }
+
+    .logo i:nth-child(3) {
+      background: #1d4ed8
+    }
+
+    .logo i:nth-child(4) {
+      background: #d97706
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: .95rem;
+    }
+
+    nav ul a:hover {
+      color: var(--blue);
+    }
+
+    @media (max-width:760px) {
+      nav ul {
+        display: none;
+      }
+    }
+
+    /* Hero */
+    .hero {
+      padding: 64px 0 40px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: -.02em;
+    }
+
+    .hero h1 span {
+      color: var(--blue);
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--blue);
+      color: #fff;
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 0;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      background: var(--blue-dark);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--blue);
+      border: 2px solid var(--blue);
+    }
+
+    .btn.ghost:hover {
+      background: var(--soft);
+    }
+
+    .cta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+    }
+
+    .hero-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(20, 30, 50, .08);
+    }
+
+    .hero-card h3 {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .pair {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .pair:first-of-type {
+      border-top: 0;
+    }
+
+    .chips {
+      display: flex;
+      gap: 6px;
+    }
+
+    .chip {
+      width: 46px;
+      height: 46px;
+      border-radius: 10px;
+      border: 1px solid rgba(0, 0, 0, .15);
+    }
+
+    .pair p {
+      margin: 0;
+      font-size: .92rem;
+    }
+
+    .pair b {
+      display: block;
+    }
+
+    @media (max-width:860px) {
+      .hero-grid {
         grid-template-columns: 1fr;
-        padding: 10px;
+      }
+    }
+
+    /* Info cards */
+    .grid3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .97rem;
+    }
+
+    .tag {
+      display: inline-block;
+      background: var(--soft);
+      color: var(--blue);
+      font-weight: 700;
+      font-size: .75rem;
+      padding: 3px 10px;
+      border-radius: 99px;
+      margin-bottom: 10px;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin: 26px 0 0;
+    }
+
+    .stat {
+      background: var(--ink);
+      color: #fff;
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .stat b {
+      font-size: 2rem;
+      display: block;
+      color: #ffd8a1;
+    }
+
+    .stat span {
+      font-size: .92rem;
+      color: #d5dbe6;
+    }
+
+    .note {
+      background: #fff8ec;
+      border: 1px solid #f3d9a8;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 22px;
+      font-size: .93rem;
+      color: #5c4513;
+    }
+
+    /* Tool */
+    #tool {
+      background: var(--dark);
+      color: #f2f4f8;
+      border-radius: 28px;
+      padding: 36px 0;
+      margin: 0 12px;
+    }
+
+    #tool .eyebrow {
+      color: #ffb457;
+    }
+
+    #tool .lead {
+      color: #b4bdcc;
+    }
+
+    .tool-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(300px, 1fr);
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    @media (max-width:900px) {
+      .tool-grid {
+        grid-template-columns: 1fr;
       }
     }
 
     .stage {
       position: relative;
       background: #000;
-      border-radius: 12px;
+      border-radius: 16px;
       overflow: hidden;
+      min-height: 260px;
     }
 
     video {
       width: 100%;
       display: block;
-      transform: scaleX(-1);
     }
 
     #zone {
@@ -73,9 +382,10 @@
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      border: 3px solid var(--accent);
-      box-shadow: 0 0 0 9999px rgba(0, 0, 0, .25);
+      border: 3px solid #22c55e;
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, .28);
       pointer-events: none;
+      display: none;
     }
 
     #zoneLabel {
@@ -84,7 +394,7 @@
       top: 100%;
       margin-top: 6px;
       background: #000;
-      color: var(--accent);
+      color: #22c55e;
       font-size: .8rem;
       padding: 2px 6px;
       white-space: nowrap;
@@ -98,7 +408,7 @@
       background: #000;
       color: #fff;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       padding: 3px 8px;
       white-space: nowrap;
     }
@@ -108,9 +418,29 @@
       left: 0;
       right: 0;
       bottom: 0;
-      background: rgba(0, 0, 0, .65);
+      background: rgba(0, 0, 0, .7);
       padding: 10px 14px;
-      font-size: 1rem;
+      font-size: .95rem;
+      display: none;
+    }
+
+    #startOverlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #1a202b, #10141c);
+    }
+
+    #startOverlay p {
+      margin: 0;
+      color: #b4bdcc;
+      max-width: 360px;
     }
 
     .controls {
@@ -118,58 +448,100 @@
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
-      margin-top: 12px;
+      margin-top: 14px;
     }
 
-    button {
-      background: var(--card);
-      color: var(--text);
-      border: 1px solid #333944;
-      padding: 8px 14px;
-      border-radius: 8px;
+    .controls button {
+      background: var(--dark2);
+      color: #f2f4f8;
+      border: 1px solid #333b4a;
+      padding: 9px 14px;
+      border-radius: 10px;
       cursor: pointer;
       font-size: .9rem;
+      font-weight: 600;
     }
 
-    button:hover {
-      border-color: var(--accent);
+    .controls button:hover {
+      border-color: #22c55e;
     }
 
-    label {
-      color: var(--muted);
+    .controls label {
+      color: #b4bdcc;
       font-size: .85rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #status {
+      color: #b4bdcc;
+      font-size: .85rem;
+      margin-top: 10px;
+      min-height: 1.3em;
     }
 
     .panel {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 14px;
+      background: var(--dark2);
+      border-radius: 16px;
+      padding: 18px;
     }
 
-    .panel h2 {
-      margin: 0 0 10px;
+    .panel h3 {
+      margin: 0 0 12px;
       font-size: 1rem;
+      color: #fff;
+    }
+
+    .big {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      background: #10141c;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    #bigSwatch {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      border: 2px solid #fff;
+      background: #333;
+      flex: none;
+    }
+
+    #bigName {
+      font-size: 1.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    #bigSub {
+      color: #b4bdcc;
+      font-size: .85rem;
     }
 
     .previews {
       display: flex;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .previews figure {
       margin: 0;
       text-align: center;
-      font-size: .75rem;
-      color: var(--muted);
+      font-size: .72rem;
+      color: #b4bdcc;
     }
 
     .previews img {
-      width: 100px;
-      height: 100px;
+      width: 92px;
+      height: 92px;
       image-rendering: pixelated;
       background: #000;
-      border-radius: 6px;
+      border-radius: 8px;
       display: block;
     }
 
@@ -183,23 +555,23 @@
     .swatch {
       width: 44px;
       height: 44px;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #fff;
     }
 
     .rowtop {
       display: flex;
       justify-content: space-between;
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .pct {
-      color: #22d3ee;
+      color: #67e8f9;
     }
 
     .bar {
       height: 8px;
-      background: #3a3f49;
+      background: #3a4150;
       border-radius: 4px;
       margin: 4px 0;
       overflow: hidden;
@@ -211,53 +583,354 @@
     }
 
     .codes {
-      font-size: .8rem;
-      color: var(--muted);
+      font-size: .78rem;
+      color: #aab3c2;
     }
 
-    #status {
+    .empty {
+      color: #8892a4;
+      font-size: .9rem;
+    }
+
+    /* Steps */
+    .steps {
+      counter-reset: s;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    .step {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      position: relative;
+    }
+
+    .step::before {
+      counter-increment: s;
+      content: counter(s);
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .step p {
+      margin: 0;
       color: var(--muted);
-      font-size: .85rem;
-      margin-top: 8px;
+      font-size: .95rem;
+    }
+
+    /* Tech */
+    .tech {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 26px;
+    }
+
+    code {
+      background: #eceae2;
+      padding: 1px 6px;
+      border-radius: 6px;
+      font-size: .88em;
+    }
+
+    .pipeline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-top: 22px;
+      font-size: .9rem;
+      font-weight: 600;
+    }
+
+    .pipeline span {
+      background: var(--soft);
+      color: var(--blue-dark);
+      padding: 6px 12px;
+      border-radius: 99px;
+    }
+
+    .pipeline em {
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    footer {
+      padding: 36px 0 48px;
+      color: var(--muted);
+      font-size: .9rem;
+      text-align: center;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--orange);
+      outline-offset: 2px;
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <h1>Real-Time Object Color Identifier</h1>
-    <p>Hold an object inside the green Sampling Zone. Built with Python, OpenCV and Flask.</p>
+
+  <nav>
+    <div class="wrap">
+      <a class="brand" href="#top"><span class="logo"><i></i><i></i><i></i><i></i></span> Color Identifier</a>
+      <ul>
+        <li><a href="#about">About color blindness</a></li>
+        <li><a href="#help">How it helps</a></li>
+        <li><a href="#tool">Try it</a></li>
+        <li><a href="#how">How it works</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="eyebrow">Accessibility tool</div>
+        <h1>Know the <span>name</span> of every color you see.</h1>
+        <p class="lead">Many people cannot tell certain colors apart, such as red and green, or brown and olive.
+          Point your camera at an object and this tool tells you what colors it has, in words and in percentages.</p>
+        <div class="cta">
+          <a class="btn" href="#tool">Try it now</a>
+          <a class="btn ghost" href="#about">Learn about color blindness</a>
+        </div>
+      </div>
+      <div class="hero-card" aria-label="Examples of colors that can look alike">
+        <h3>Colors that can look alike to some people</h3>
+        <div class="pair">
+          <div class="chips">
+            <div class="chip" style="background:#c0392b"></div>
+            <div class="chip" style="background:#5d8a2f"></div>
+          </div>
+          <p><b>Red and green</b>The most common confusion.</p>
+        </div>
+        <div class="pair">
+          <div class="chips">
+            <div class="chip" style="background:#8b5a2b"></div>
+            <div class="chip" style="background:#6b7a2a"></div>
+          </div>
+          <p><b>Brown and olive green</b>Hard to separate in dim light.</p>
+        </div>
+        <div class="pair">
+          <div class="chips">
+            <div class="chip" style="background:#e58fb0"></div>
+            <div class="chip" style="background:#9a9a9a"></div>
+          </div>
+          <p><b>Pink and gray</b>Pale colors lose their tint.</p>
+        </div>
+        <div class="pair">
+          <div class="chips">
+            <div class="chip" style="background:#6b3fa0"></div>
+            <div class="chip" style="background:#2b4fb0"></div>
+          </div>
+          <p><b>Purple and blue</b>Often mixed up as well.</p>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section>
-      <div class="stage" id="stage">
-        <video id="video" autoplay playsinline muted></video>
-        <div id="zone">
-          <div id="topLabel">Waiting...</div>
-          <div id="zoneLabel">SAMPLING ZONE</div>
-        </div>
-        <div id="strip">Waiting for analysis...</div>
-      </div>
-      <div class="controls">
-        <button id="freezeBtn">Freeze</button>
-        <button id="saveBtn">Save screenshot</button>
-        <button id="calBtn">Calibrate white</button>
-        <button id="resetBtn">Reset</button>
-        <label>Zone size <input id="zoneSize" type="range" min="10" max="60" value="30"></label>
-      </div>
-      <div id="status">Starting camera...</div>
-    </section>
+  <section id="about">
+    <div class="wrap">
+      <div class="eyebrow">Understanding the condition</div>
+      <h2>What is color blindness?</h2>
+      <p class="lead">Color blindness, also called color vision deficiency, means the eyes see some colors differently
+        or have trouble telling certain colors apart. It is usually inherited and present from birth. It is not a
+        disease, it does not usually get worse, and most people with it see clearly in every other way.</p>
 
-    <aside class="panel">
-      <h2>Color Analysis</h2>
-      <div class="previews">
-        <figure><img id="maskImg" alt="mask">Mask</figure>
-        <figure><img id="segImg" alt="segmented">Segmented colors</figure>
+      <div class="stats">
+        <div class="stat"><b>About 1 in 12</b><span>men are affected, according to commonly cited estimates</span></div>
+        <div class="stat"><b>About 1 in 200</b><span>women are affected, because the common types are passed through the
+            X chromosome</span></div>
+        <div class="stat"><b>Hundreds of millions</b><span>of people live with some form of it worldwide</span></div>
       </div>
-      <div id="rows"></div>
-    </aside>
-  </main>
+
+      <div class="grid3">
+        <div class="card">
+          <span class="tag">Most common</span>
+          <h3>Red and green deficiency</h3>
+          <p>Includes protan types (reduced sensitivity to red light) and deutan types (reduced sensitivity to green
+            light).
+            Reds, greens, browns and oranges can look alike.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Rare</span>
+          <h3>Blue and yellow deficiency</h3>
+          <p>Called tritan types. Blues and greens, or yellows and pinks, can be confused. It affects men and women
+            equally.</p>
+        </div>
+        <div class="card">
+          <span class="tag">Very rare</span>
+          <h3>Total color blindness</h3>
+          <p>Called achromatopsia. The world is seen in shades of gray, and it is often joined by sensitivity to bright
+            light.</p>
+        </div>
+      </div>
+
+      <div class="note">
+        Color blindness can also be acquired later in life through some eye diseases, aging, injuries or certain
+        medicines.
+        There is currently no cure for the inherited form, but tools and habits make daily life easier.
+        An eye care professional can test for it, for example with the Ishihara plate test. This website is not a
+        medical test.
+      </div>
+    </div>
+  </section>
+
+  <section id="help" style="padding-top:0">
+    <div class="wrap">
+      <div class="eyebrow">Everyday life</div>
+      <h2>How this tool can help</h2>
+      <p class="lead">Color is used everywhere to carry information. When you cannot rely on seeing it, a quick
+        spoken-style answer like "Olive Green, 70%" removes the guesswork.</p>
+      <div class="grid3">
+        <div class="card">
+          <h3>Choosing clothes</h3>
+          <p>Check whether a shirt and pants match, or find the pair of socks that really is navy and not black.</p>
+        </div>
+        <div class="card">
+          <h3>Food and shopping</h3>
+          <p>Judge whether fruit is ripe, meat is cooked, or which package color is the one you wanted.</p>
+        </div>
+        <div class="card">
+          <h3>School and work</h3>
+          <p>Read color coded charts, folders, wires, markers and labels with confidence.</p>
+        </div>
+        <div class="card">
+          <h3>Safety</h3>
+          <p>Tell apart warning labels, indicator lights and colored cables before you touch or connect anything.</p>
+        </div>
+        <div class="card">
+          <h3>Hobbies and art</h3>
+          <p>Pick the right paint, thread, beads or LEGO pieces by name instead of by guessing.</p>
+        </div>
+        <div class="card">
+          <h3>More than one color</h3>
+          <p>Objects are rarely one color. The tool lists every main color on an object with its share, not just the
+            biggest one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tool">
+    <div class="wrap">
+      <div class="eyebrow">Live tool</div>
+      <h2>Try the Color Identifier</h2>
+      <p class="lead">Start the camera, then hold an object inside the green Sampling Zone. Your video is only used to
+        read colors and is not saved.</p>
+
+      <div class="tool-grid">
+        <div>
+          <div class="stage" id="stage">
+            <video id="video" autoplay playsinline muted></video>
+            <div id="zone">
+              <div id="topLabel">Waiting...</div>
+              <div id="zoneLabel">SAMPLING ZONE</div>
+            </div>
+            <div id="strip">Waiting for analysis...</div>
+            <div id="startOverlay">
+              <p>Allow camera access when your browser asks. On a phone, the back camera is used.</p>
+              <button class="btn" id="startBtn">Start camera</button>
+            </div>
+          </div>
+          <div class="controls">
+            <button id="freezeBtn">Freeze</button>
+            <button id="saveBtn">Save screenshot</button>
+            <button id="calBtn">Calibrate white</button>
+            <button id="camBtn">Switch camera</button>
+            <button id="mirrorBtn">Mirror</button>
+            <label>Zone size <input id="zoneSize" type="range" min="10" max="60" value="30"></label>
+          </div>
+          <div id="status">Camera is off.</div>
+        </div>
+
+        <aside class="panel" aria-live="polite">
+          <h3>Color analysis</h3>
+          <div class="big">
+            <div id="bigSwatch"></div>
+            <div>
+              <div id="bigName">No color yet</div>
+              <div id="bigSub">Start the camera to begin</div>
+            </div>
+          </div>
+          <div class="previews">
+            <figure><img id="maskImg" alt="Mask preview">Mask</figure>
+            <figure><img id="segImg" alt="Segmented colors preview">Segmented colors</figure>
+          </div>
+          <div id="rows">
+            <div class="empty">Detected colors will appear here.</div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="eyebrow">Getting good results</div>
+      <h2>How to use it</h2>
+      <div class="steps">
+        <div class="step">
+          <h3>Start the camera</h3>
+          <p>Press the button and allow camera access.</p>
+        </div>
+        <div class="step">
+          <h3>Fill the zone</h3>
+          <p>Hold the object so it fills the green square. Use the slider to resize the zone.</p>
+        </div>
+        <div class="step">
+          <h3>Calibrate for accuracy</h3>
+          <p>In the same light as your object, fill the zone with plain white paper and press Calibrate white.</p>
+        </div>
+        <div class="step">
+          <h3>Read the result</h3>
+          <p>The main color is shown large, with every other color and its percentage, RGB and HEX code below it.</p>
+        </div>
+      </div>
+
+      <h2 style="margin-top:48px">How it works</h2>
+      <p class="lead">Built for CSC 126 Computer Vision with Python, OpenCV and Flask. The browser sends only the small
+        sampling zone to the server, which analyzes it with classical OpenCV techniques.</p>
+      <div class="tech">
+        <div class="card"><span class="tag">Image operations</span>
+          <h3>Cleaning the image</h3>
+          <p>Blurring removes camera noise, and colors are converted from BGR to HSV and LAB so brightness and color can
+            be judged separately.</p>
+        </div>
+        <div class="card"><span class="tag">Image segmentation</span>
+          <h3>Isolating the object</h3>
+          <p>Only the center zone is analyzed. A threshold mask removes glare, and morphology cleans the mask.</p>
+        </div>
+        <div class="card"><span class="tag">Analysis and transformation</span>
+          <h3>Naming the colors</h3>
+          <p>K-Means clustering groups similar pixels, close shades are merged, and each group is named from its hue,
+            brightness and saturation.</p>
+        </div>
+      </div>
+      <div class="pipeline">
+        <span>Camera</span><em>&rarr;</em><span>Center zone</span><em>&rarr;</em><span>Blur</span><em>&rarr;</em>
+        <span>HSV mask</span><em>&rarr;</em><span>LAB K-Means</span><em>&rarr;</em><span>Merge
+          shades</span><em>&rarr;</em><span>Color names</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">Real-Time Object Color Identifier for Colorblind Individuals. CSC 126 Computer Vision Midterm
+      Project,
+      College of Computing and Information Sciences, Caraga State University.</div>
+  </footer>
 
   <canvas id="crop" width="128" height="128" hidden></canvas>
 
@@ -270,37 +943,69 @@
     const rowsEl = document.getElementById("rows");
     const stripEl = document.getElementById("strip");
     const topLabel = document.getElementById("topLabel");
+    const bigName = document.getElementById("bigName");
+    const bigSub = document.getElementById("bigSub");
+    const bigSwatch = document.getElementById("bigSwatch");
 
     let fraction = 0.30;       // zone side as a fraction of the shorter video side
     let frozen = false;
+    let started = false;
+    let toolVisible = true;
     let smooth = {};           // name -> {pct, rgb}  (client-side smoothing)
     const ALPHA = 0.5;
     const CROP = 128;
 
+    let facing = "environment";   // "environment" = back camera, "user" = front camera
+    let mirrored = false;
+    let rotated = false;
+    let viewKey = "front";
+
     // ---------- Camera ----------
-    // facingMode "environment" = back camera on phones; laptops fall back to the webcam.
+    function applyView() {
+      video.style.transform = [mirrored ? "scaleX(-1)" : "", rotated ? "rotate(180deg)" : ""].join(" ").trim();
+    }
+
+    // Load the saved Mirror/Rotate choice for this device and this camera (front or back)
+    function loadView(stream) {
+      const s = stream.getVideoTracks()[0].getSettings();
+      viewKey = (s.facingMode === "environment") ? "back" : "front";
+      try {
+        const saved = JSON.parse(localStorage.getItem("view_" + viewKey) || "{}");
+        mirrored = !!saved.mirrored;
+        rotated = !!saved.rotated;
+      } catch (e) { mirrored = false; rotated = false; }
+      applyView();
+    }
+
+    function saveView() {
+      try { localStorage.setItem("view_" + viewKey, JSON.stringify({ mirrored, rotated })); } catch (e) { }
+    }
+
     async function startCamera() {
       try {
+        if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: { ideal: "environment" },
-            width: { ideal: 1280 }, height: { ideal: 720 }
-          },
+          video: { facingMode: { ideal: facing }, width: { ideal: 1280 }, height: { ideal: 720 } },
           audio: false
         });
         video.srcObject = stream;
         await video.play();
+        loadView(stream);
+        const firstStart = !started;
+        started = true;
+        document.getElementById("startOverlay").style.display = "none";
+        zone.style.display = "block";
+        stripEl.style.display = "block";
         statusEl.textContent = "Camera ready.";
         updateZoneBox();
-        loop();
+        if (firstStart) loop();   // start the analysis loop only once
       } catch (err) {
         statusEl.textContent = "Camera error: " + err.message +
-          ". Allow camera access and close other apps using the camera.";
+          ". Allow camera access, use https, and close other apps using the camera.";
       }
     }
 
-    // Try to lock (or unlock) auto white balance and exposure so colors stop drifting.
-    // Not every phone or browser allows this, so it fails quietly.
+    // Try to lock (or unlock) auto white balance and exposure. Fails quietly if unsupported.
     async function setCameraLock(lock) {
       try {
         const track = video.srcObject.getVideoTracks()[0];
@@ -311,12 +1016,10 @@
         if (Object.keys(adv).length === 0) return false;
         await track.applyConstraints({ advanced: [adv] });
         return true;
-      } catch (e) {
-        return false;
-      }
+      } catch (e) { return false; }
     }
 
-    // ---------- Zone box (CSS) ----------
+    // ---------- Zone box ----------
     function updateZoneBox() {
       const vw = video.videoWidth || 1280, vh = video.videoHeight || 720;
       const side = Math.min(vw, vh) * fraction;
@@ -331,7 +1034,7 @@
       return new Promise(r => crop.toBlob(r, "image/jpeg", quality));
     }
 
-    // ---------- Smoothing (exponential moving average) ----------
+    // ---------- Smoothing ----------
     function smoothUpdate(colors) {
       const incoming = {};
       colors.forEach(c => incoming[c.name] = c);
@@ -344,10 +1047,7 @@
           s.pct += ALPHA * (c.pct - s.pct);
           s.rgb = s.rgb.map((v, i) => v + ALPHA * (c.rgb[i] - v));
         } else {
-          smooth[c.name] = {
-            pct: c.pct * (Object.keys(smooth).length ? ALPHA : 1),
-            rgb: c.rgb.slice()
-          };
+          smooth[c.name] = { pct: c.pct * (Object.keys(smooth).length ? ALPHA : 1), rgb: c.rgb.slice() };
         }
       });
       for (const name in smooth) if (smooth[name].pct < 1.5) delete smooth[name];
@@ -363,9 +1063,12 @@
     // ---------- Rendering ----------
     function render(colors) {
       if (!colors.length) return;
-      topLabel.textContent = colors[0].name + "  " + Math.round(colors[0].pct) + "%";
-      stripEl.textContent = colors.slice(0, 4)
-        .map(c => c.name + ": " + Math.round(c.pct) + "%").join(" | ");
+      const top = colors[0];
+      topLabel.textContent = top.name + "  " + Math.round(top.pct) + "%";
+      stripEl.textContent = colors.slice(0, 4).map(c => c.name + ": " + Math.round(c.pct) + "%").join(" | ");
+      bigName.textContent = top.name;
+      bigSub.textContent = Math.round(top.pct) + "% of the zone, " + top.hex;
+      bigSwatch.style.background = "rgb(" + top.rgb.join(",") + ")";
       rowsEl.innerHTML = colors.map(c => {
         const css = "rgb(" + c.rgb.join(",") + ")";
         return `<div class="row">
@@ -387,12 +1090,11 @@
       inflight++;
       try {
         const blob = await grabZone(0.92);
-        // Ask for the mask and segmented previews only every 5th frame
-        const preview = (mySeq % 5 === 1) ? "1" : "0";
+        const preview = (mySeq % 5 === 1) ? "1" : "0";   // previews only every 5th frame
         const res = await fetch("/analyze?preview=" + preview, { method: "POST", body: blob });
         const data = await res.json();
 
-        if (mySeq < lastShown) return;   // drop out-of-order (older) replies
+        if (mySeq < lastShown) return;                    // drop out-of-order replies
         lastShown = mySeq;
 
         if (data.error) {
@@ -411,12 +1113,22 @@
     }
 
     function loop() {
-      if (!frozen && video.videoWidth && inflight < MAX_INFLIGHT) sendFrame();
+      // Only analyze while the camera is on, the tool is on screen, and the tab is visible
+      if (started && !frozen && toolVisible && !document.hidden && video.videoWidth && inflight < MAX_INFLIGHT) {
+        sendFrame();
+      }
       setTimeout(loop, 120);
     }
 
+    // Pause analysis when the tool section is scrolled out of view (saves server load)
+    new IntersectionObserver(entries => { toolVisible = entries[0].isIntersecting; }, { threshold: 0.05 })
+      .observe(document.getElementById("tool"));
+
     // ---------- Controls ----------
+    document.getElementById("startBtn").onclick = startCamera;
+
     document.getElementById("freezeBtn").onclick = (e) => {
+      if (!started) return;
       frozen = !frozen;
       if (frozen) video.pause(); else video.play();
       statusEl.textContent = frozen ? "Frozen." : "Live.";
@@ -428,11 +1140,21 @@
       updateZoneBox();
     };
 
+    // Switch between the back and front camera
+    document.getElementById("camBtn").onclick = () => {
+      facing = (facing === "environment") ? "user" : "environment";
+      startCamera();
+    };
+    // Flip the picture left to right, or turn it upside down (view only, colors are not affected).
+    // The choice is remembered per device and per camera.
+    document.getElementById("mirrorBtn").onclick = () => { mirrored = !mirrored; applyView(); saveView(); };
+
     // Hold plain white paper inside the zone, in the same light as your objects, then press this.
     document.getElementById("calBtn").onclick = async () => {
+      if (!started) { statusEl.textContent = "Start the camera first."; return; }
       statusEl.textContent = "Calibrating...";
       const locked = await setCameraLock(true);
-      await new Promise(r => setTimeout(r, 600));      // let the camera settle
+      await new Promise(r => setTimeout(r, 600));
       const blob = await grabZone(0.95);
       const res = await fetch("/calibrate", { method: "POST", body: blob });
       const data = await res.json();
@@ -442,19 +1164,17 @@
         : "Calibration failed.";
     };
 
-    document.getElementById("resetBtn").onclick = async () => {
-      await fetch("/reset", { method: "POST" });
-      await setCameraLock(false);
-      smooth = {};
-      statusEl.textContent = "Calibration reset.";
-    };
 
     document.getElementById("saveBtn").onclick = () => {
-      // Screenshot: video frame plus the sampling zone and color summary on top
+      if (!started) { statusEl.textContent = "Start the camera first."; return; }
       const c = document.createElement("canvas");
       c.width = video.videoWidth; c.height = video.videoHeight;
       const g = c.getContext("2d");
+      g.save();
+      if (mirrored) { g.translate(c.width, 0); g.scale(-1, 1); }
+      if (rotated) { g.translate(c.width, c.height); g.rotate(Math.PI); }
       g.drawImage(video, 0, 0);
+      g.restore();
       const side = Math.min(c.width, c.height) * fraction;
       g.strokeStyle = "#22c55e"; g.lineWidth = 4;
       g.strokeRect((c.width - side) / 2, (c.height - side) / 2, side, side);
@@ -469,8 +1189,6 @@
 
     video.addEventListener("loadedmetadata", updateZoneBox);
     window.addEventListener("resize", updateZoneBox);
-
-    startCamera();
   </script>
 </body>
 
